@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shuri</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	</head>
+	<body>
+		<div id="content">
+        	<label>Enter your URL:</label>
+        	<input type="url" class="url">
+        	<button class="btn">Shorten</button>
+    	</div>
+
+    	<script>
+            const input = document.querySelector(`.url`);
+            const btn = document.querySelector(`.btn`);
+
+            btn.addEventListener(`click`, () => {
+                const url = input.value;
+                console.log(url);
+
+                if (url.match(/^(https?:\/\/)?\S*?\.\S*?$/)) {
+                    fetch(`api.php`, {
+                        method: `POST`,
+                        body: JSON.stringify({ url }),
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.ok) {
+                                document.write(res.short_url);
+                            }
+                        });
+                } else {
+                    alert(`Invalid url.`);
+                }
+            });
+    	</script>
+	</body>
+</html>

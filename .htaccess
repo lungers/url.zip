@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Uncomment to redirect to https
+# RewriteCond %{HTTPS} !=on
+# RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R=301]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ api.php?$1
+
+<Files shuri.db>
+    Order Allow,Deny
+    Deny from all
+</Files>
