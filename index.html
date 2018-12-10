@@ -17,7 +17,6 @@
 
             btn.addEventListener(`click`, () => {
                 const url = input.value;
-                console.log(url);
 
                 if (url.match(/^(https?:\/\/)?\S*?\.\S*?$/)) {
                     fetch(`api.php`, {
