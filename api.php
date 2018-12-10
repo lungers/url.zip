@@ -7,7 +7,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS urls (
     PRIMARY KEY (ID)
 )');
 
-$dir = dirname($_SERVER['PHP_SELF']);
+$dir = rtrim(dirname($_SERVER['PHP_SELF']), '/');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
