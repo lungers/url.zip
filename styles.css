@@ -4,6 +4,60 @@ body {
     transition: all .2s ease-in-out;
 }
 
+body.light {
+    background-color: #e6e6e6;
+    color: #4e5d6c;
+}
+
+body.light .theme-changer {
+    background: #2B3E50;
+}
+
+body:not(.light) .theme-changer {
+    background: #EBEBEB;
+}
+
+.sun {
+    fill: #2B3E50;
+}
+
+.moon {
+    fill: #e6e6e6;
+}
+
+body.light .sun,
+body:not(.light) .moon {
+    display: block;
+}
+
+body.light .sun,
+body:not(.light) .moon {
+    display: none;
+}
+
+body.light .short-url,
+body.light .short-url:focus {
+    background-color: #f3f3f3;
+}
+
+.theme-changer {
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 125px;
+    height: 125px;
+    clip-path: polygon(0 0, 100% 100%, 100% 0);
+}
+
+.theme-icon {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    width: 35px;
+    height: 35px;
+}
+
 .title {
     font-size: 3rem;
     margin-top: -2rem;
