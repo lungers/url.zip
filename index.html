@@ -2,14 +2,25 @@
 <html>
 	<head>
 		<title>Shuri</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
-		<div id="content">
-        	<label>Enter your URL:</label>
-        	<input type="url" class="url">
-        	<button class="btn">Shorten</button>
-    	</div>
+        <div class="container">
+            <div class="v-center w-30-p text-center">
+                <h1 class="title">Shuri</h1>
+
+                <div class="shorten">
+                    <input type="url" class="url form-control align-middle d-inline-block" placeholder="Long URL">
+                    <button class="btn btn-primary">Shorten</button>
+                </div>
+
+                <div class="result">
+                    <a class="short-url form-control d-inline-block"></a>
+                </div>
+            </div>
+        </div>
 
     	<script>
             const input = document.querySelector(`.url`);
