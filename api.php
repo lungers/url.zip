@@ -1,11 +1,9 @@
 <?php
 
-$db = new SQLite3('shuri.db');
-$db->exec('CREATE TABLE IF NOT EXISTS urls (
-    ID varchar(5) NOT NULL UNIQUE,
-    LongUrl text NOT NULL UNIQUE,
-    PRIMARY KEY (ID)
-)');
+define('MYSQL_SERVER', '');
+define('MYSQL_USER', '');
+define('MYSQL_PASSWORD', '');
+define('MYSQL_DATABASE', '');
 
 $dir = rtrim(dirname($_SERVER['PHP_SELF']), '/');
 
@@ -30,10 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $shortUrl = 'http://' . $shortUrl;
         }
 
-        $stmp = $db->prepare('INSERT OR IGNORE INTO urls (ID, LongUrl) VALUES (:id, :url)');
-        $stmp->bindValue(':id', $urlhash);
-        $stmp->bindValue(':url', $url);
-        $stmp->execute();
+        addUrl($url, $urlhash);
 
         echo json_encode(array(
             'ok' => true,
@@ -46,19 +41,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'message' => 'Invalid url.'
         ));
     }
-
-    exit;
 } elseif (!empty($_GET)) {
     $urlhash = key($_GET);
-
-    $stmp = $db->prepare('SELECT LongUrl FROM urls WHERE ID = :id');
-    $stmp->bindValue(':id', $urlhash);
-
-    $res = $stmp->execute()->fetchArray();
-    $url = $res['LongUrl'] ? $res['LongUrl'] : $dir;
+    $res = getUrl($urlhash);
+    $url = ($res !== null) ? $res['LongUrl'] : ((empty($dir)) ? '/' : $dir);
 
     header('Location:' . $url);
-    exit;
+}
+
+function addUrl($url, $hash) {
+    $conn = new mysqli(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE);
+    $url = $conn->real_escape_string($url);
+    $hash = $conn->real_escape_string($hash);
+    $sql = "INSERT IGNORE INTO urls (ID, LongUrl) VALUES ('$hash', '$url')";
+    $conn->query($sql);
+    $conn->close();
+}
+
+function getUrl($hash) {
+    $conn = new mysqli(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE);
+    $hash = $conn->real_escape_string($hash);
+    $sql = "SELECT LongUrl FROM urls WHERE ID = '$hash'";
+    $res = $conn->query($sql);
+    $conn->close();
+
+    return !empty($res) ? $res->fetch_assoc() : null;
 }
 
 function smallHash($text) {
