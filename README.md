@@ -6,4 +6,5 @@ Simple url shortener script
 Installation
 ------------
 
-Just clone this repo. It's that easy!
+- Clone this repo
+- Add your mysql details in `api.php`
