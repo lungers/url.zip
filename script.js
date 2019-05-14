@@ -1,10 +1,10 @@
 (() => {
     const themeChanger = document.querySelector(`.theme-changer`);
     const shorten = document.querySelector(`.shorten`);
-    const input = document.querySelector(`.url`);
-    const btn = document.querySelector(`.btn`);
+    const shortenUrl = document.querySelector(`.shorten__url`);
+    const shortenButton = document.querySelector(`.shorten__button`);
     const result = document.querySelector(`.result`);
-    const shortUrl = document.querySelector(`.short-url`);
+    const resultUrl = document.querySelector(`.result__url`);
 
     if (localStorage.light === `true`) {
         document.body.classList.add(`light`);
@@ -15,20 +15,21 @@
         localStorage.light = document.body.classList.contains(`light`);
     });
 
-    btn.addEventListener(`click`, () => {
-        const url = input.value;
+    shortenButton.addEventListener(`click`, () => {
+        const url = shortenUrl.value;
 
         if (url.match(/^(https?:\/\/)?\S*?\.\S*?$/)) {
-            fetch(`api.php`, {
-                method: `POST`,
-                body: JSON.stringify({ url }),
-            })
+            fetch(`https://s.lungers.com/api.php`, {
+                    method: `POST`,
+                    body: JSON.stringify({ url }),
+                })
                 .then(res => res.json())
                 .then(res => {
                     if (res.ok) {
-                        shorten.style.display = `none`;
-                        result.style.display = `block`;
-                        shortUrl.innerText = shortUrl.href = res.short_url;
+                        shorten.classList.add(`shorten--hidden`);
+                        result.classList.add(`result--visible`);
+
+                        resultUrl.innerText = resultUrl.href = res.short_url;
                     }
                 });
         } else {
